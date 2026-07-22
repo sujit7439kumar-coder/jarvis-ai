@@ -1,38 +1,44 @@
-const status = document.getElementById("status");
-const btn = document.getElementById("talkBtn");
+const API_URL = "https://jarvis-ai-production-9272.up.railway.app/chat";
+
+const btn = document.getElementById("start-btn");
+
+function speak(text) {
+  const speech = new SpeechSynthesisUtterance(text);
+  speech.lang = "en-US";
+  speech.rate = 1;
+  window.speechSynthesis.speak(speech);
+}
+
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition.lang = "en-US";
+recognition.continuous = false;
 
 btn.addEventListener("click", () => {
-
-  status.innerHTML = "🎙️ Listening...";
-
-  const SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
-
-  if (!SpeechRecognition) {
-    status.innerHTML = "❌ Speech Recognition not supported";
-    return;
-  }
-
-  const recognition = new SpeechRecognition();
-  recognition.lang = "en-US";
-
   recognition.start();
-
-  recognition.onresult = (event) => {
-    const text = event.results[0][0].transcript;
-
-    status.innerHTML = "🗣️ " + text;
-
-    const speech = new SpeechSynthesisUtterance(
-      "You said " + text
-    );
-
-    speech.lang = "en-US";
-    window.speechSynthesis.speak(speech);
-  };
-
-  recognition.onerror = () => {
-    status.innerHTML = "⚠️ Voice recognition failed";
-  };
-
 });
+
+recognition.onresult = async (event) => {
+  const message = event.results[0][0].transcript;
+  console.log("You:", message);
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: message
+      })
+    });
+
+    const data = await res.json();
+
+    console.log("Jarvis:", data.reply);
+    speak(data.reply);
+
+  } catch (err) {
+    console.error(err);
+    speak("Sorry, I cannot connect to the server.");
+  }
+};
