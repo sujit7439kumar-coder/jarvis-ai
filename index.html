@@ -6,22 +6,24 @@
   <title>JARVIS AI</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<div class="container">
-  <h1>🤖 JARVIS AI</h1>
+  <div class="container">
+    <h1>🤖 JARVIS AI</h1>
+    <p>Press the button and speak</p>
 
-  <div class="orb"></div>
+    <button id="start-btn">
+      🎤 Start Talking
+    </button>
 
-  <p id="status">Hello Sujit 👋</p>
+    <h3>You Said:</h3>
+    <p id="user-text">...</p>
 
-  <button id="talkBtn">
-    🎤 Talk to Jarvis
-  </button>
-</div>
+    <h3>Jarvis Reply:</h3>
+    <p id="ai-text">Waiting...</p>
+  </div>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
 
 </body>
 </html>
