@@ -8,22 +8,35 @@
 </head>
 <body>
 
-  <div class="container">
-    <h1>🤖 JARVIS AI</h1>
-    <p>Press the button and speak</p>
+<div class="container">
 
-    <button id="start-btn">
-      🎤 Start Talking
-    </button>
+  <h1>🤖 JARVIS AI</h1>
 
-    <h3>You Said:</h3>
-    <p id="user-text">...</p>
+  <p class="status" id="status">
+    Click the button and start speaking...
+  </p>
 
-    <h3>Jarvis Reply:</h3>
-    <p id="ai-text">Waiting...</p>
+  <button id="start-btn">
+    🎤 Start Talking
+  </button>
+
+  <div class="chat-box">
+
+    <div class="user-box">
+      <h3>You</h3>
+      <p id="user-text">...</p>
+    </div>
+
+    <div class="ai-box">
+      <h3>Jarvis</h3>
+      <p id="ai-text">Waiting...</p>
+    </div>
+
   </div>
 
-  <script src="script.js"></script>
+</div>
+
+<script src="script.js"></script>
 
 </body>
 </html>
