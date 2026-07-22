@@ -1,44 +1,75 @@
-import express from "express";
-import dotenv from "dotenv";
-import { GoogleGenAI } from "@google/genai";
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
 
-dotenv.config();
+body{
+    background:#0f172a;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    color:white;
+}
 
-const app = express();
-app.use(express.json());
+.container{
+    width:90%;
+    max-width:500px;
+    background:#1e293b;
+    padding:25px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 0 20px rgba(0,255,255,.25);
+}
 
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
+h1{
+    margin-bottom:15px;
+    color:#38bdf8;
+}
 
-// Home Route
-app.get("/", (req, res) => {
-  res.send("JARVIS Server Running 🚀");
-});
+.status{
+    color:#cbd5e1;
+    margin-bottom:20px;
+}
 
-// AI Chat Route
-app.post("/chat", async (req, res) => {
-  try {
-    const { message } = req.body;
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:#06b6d4;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    transition:.3s;
+}
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: message,
-    });
+button:hover{
+    background:#0891b2;
+}
 
-    res.json({
-      reply: response.text,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      reply: "Something went wrong!",
-    });
-  }
-});
+.chat-box{
+    margin-top:25px;
+    text-align:left;
+}
 
-const PORT = process.env.PORT || 3000;
+.user-box,.ai-box{
+    background:#334155;
+    padding:15px;
+    border-radius:12px;
+    margin-top:15px;
+}
 
-app.listen(PORT, () => {
-  console.log(`JARVIS Server Running on Port ${PORT}`);
-});
+.user-box h3,
+.ai-box h3{
+    color:#38bdf8;
+    margin-bottom:8px;
+}
+
+#user-text,
+#ai-text{
+    word-wrap:break-word;
+    line-height:1.6;
+}
