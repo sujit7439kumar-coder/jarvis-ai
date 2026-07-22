@@ -1,28 +1,26 @@
 const API_URL = "https://jarvis-ai-production-9272.up.railway.app/chat";
 
 const btn = document.getElementById("start-btn");
-
-function speak(text) {
-  const speech = new SpeechSynthesisUtterance(text);
-  speech.lang = "en-US";
-  speech.rate = 1;
-  window.speechSynthesis.speak(speech);
-}
+const userText = document.getElementById("user-text");
+const aiText = document.getElementById("ai-text");
 
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-recognition.lang = "en-US";
-recognition.continuous = false;
 
-btn.addEventListener("click", () => {
+recognition.lang = "en-US";
+recognition.interimResults = false;
+
+btn.onclick = () => {
   recognition.start();
-});
+};
 
 recognition.onresult = async (event) => {
   const message = event.results[0][0].transcript;
-  console.log("You:", message);
+
+  userText.innerText = message;
+  aiText.innerText = "Thinking...";
 
   try {
-    const res = await fetch(API_URL, {
+    const response = await fetch(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -32,13 +30,15 @@ recognition.onresult = async (event) => {
       })
     });
 
-    const data = await res.json();
+    const data = await response.json();
 
-    console.log("Jarvis:", data.reply);
-    speak(data.reply);
+    aiText.innerText = data.reply;
 
-  } catch (err) {
-    console.error(err);
-    speak("Sorry, I cannot connect to the server.");
+    const speech = new SpeechSynthesisUtterance(data.reply);
+    speech.lang = "en-US";
+    window.speechSynthesis.speak(speech);
+
+  } catch (e) {
+    aiText.innerText = "Server Error!";
   }
 };
